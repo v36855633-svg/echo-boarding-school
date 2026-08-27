@@ -16,3 +16,4 @@ android.gradle_dependencies = 'org.libsdl.app:SDL2:2.0.12'
 [buildozer]
 log_level = 2
 warn_on_root = 1
+android.accept_sdk_license = True
