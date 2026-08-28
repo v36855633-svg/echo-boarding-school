@@ -29,16 +29,12 @@ jobs:
           yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;37.0.0" "platform-tools" "platforms;android-37" > /dev/null 2>&1 || true
           mkdir -p $HOME/.android
           cp -r $HOME/android-sdk/licenses $HOME/.android/licenses
-      - name: Copy SDK to Buildozer expected location
+      - name: Prepare Buildozer SDK directory
         run: |
-          mkdir -p $HOME/.buildozer/android/platform/android-sdk/build-tools
-          mkdir -p $HOME/.buildozer/android/platform/android-sdk/platforms
-          mkdir -p $HOME/.buildozer/android/platform/android-sdk/platform-tools
-          mkdir -p $HOME/.buildozer/android/platform/android-sdk/licenses
-          cp -r $HOME/android-sdk/build-tools/37.0.0 $HOME/.buildozer/android/platform/android-sdk/build-tools/ || true
-          cp -r $HOME/android-sdk/platforms/android-37 $HOME/.buildozer/android/platform/android-sdk/platforms/ || true
-          cp -r $HOME/android-sdk/platform-tools/* $HOME/.buildozer/android/platform/android-sdk/platform-tools/ || true
-          cp -r $HOME/android-sdk/licenses/* $HOME/.buildozer/android/platform/android-sdk/licenses/ || true
+          mkdir -p $HOME/.buildozer/android/platform/android-sdk
+          cp -r $HOME/android-sdk/* $HOME/.buildozer/android/platform/android-sdk/
+          mkdir -p $HOME/.buildozer/android/platform/android-sdk/tools/bin
+          ln -sf $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager $HOME/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
       - name: Build APK
         env:
           ANDROID_ACCEPT_SDK_LICENSES: "true"
