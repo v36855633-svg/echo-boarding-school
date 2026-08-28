@@ -12,16 +12,28 @@ jobs:
       - name: Install Buildozer
         run: |
           pip install buildozer cython
-      - name: Accept Android SDK licenses
+      - name: Install Android SDK command line tools
         run: |
-          mkdir -p $HOME/.android/licenses
-          echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > $HOME/.android/licenses/android-sdk-license
-          echo "84831b9409646a918e30573bab4c9c91346d8abd" > $HOME/.android/licenses/android-sdk-preview-license
-          echo "33b6a2b64607f11b759f320ef9dff4ae5c47d97a" > $HOME/.android/licenses/android-sdk-license
-          echo "e9ac7b17b4c4a2f6f6f7b1e1e1b1e1b1e1b1e1b1" > $HOME/.android/licenses/android-sdk-preview-license
+          mkdir -p $HOME/android-sdk/cmdline-tools
+          cd $HOME/android-sdk/cmdline-tools
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+          unzip -q commandlinetools-linux-11076708_latest.zip
+          mv cmdline-tools latest
+          ls -la $HOME/android-sdk/cmdline-tools/latest/bin/
+      - name: Accept licenses and install build-tools
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+        run: |
+          yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || true
+          $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;37.0.0" "platform-tools" "platforms;android-37" > /dev/null 2>&1 || true
+          mkdir -p $HOME/.android
+          cp -r $HOME/android-sdk/licenses $HOME/.android/licenses
+          echo "sdk.dir=$HOME/android-sdk" > $HOME/buildozer.sdk
       - name: Build APK
         env:
           ANDROID_ACCEPT_SDK_LICENSES: "true"
+          ANDROID_SDK_ROOT: $HOME/android-sdk
+          ANDROID_HOME: $HOME/android-sdk
         run: |
           buildozer android debug
       - name: Upload APK
