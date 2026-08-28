@@ -3,23 +3,11 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: kivy/python3.11-android
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Install Buildozer
-        run: |
-          pip install buildozer cython
-      - name: Accept Android SDK licenses
-        run: |
-          mkdir -p $HOME/.android/licenses
-          echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > $HOME/.android/licenses/android-sdk-license
-          echo "84831b9409646a918e30573bab4c9c91346d8abd" > $HOME/.android/licenses/android-sdk-preview-license
       - name: Build APK
-        env:
-          ANDROID_ACCEPT_SDK_LICENSES: "true"
         run: |
           buildozer android debug
       - name: Upload APK
