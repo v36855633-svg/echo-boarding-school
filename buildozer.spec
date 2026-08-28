@@ -17,3 +17,8 @@ android.gradle_dependencies = 'org.libsdl.app:SDL2:2.0.12'
 log_level = 2
 warn_on_root = 1
 android.accept_sdk_license = True
+
+# Use system Android SDK
+android.sdk_path = /home/runner/android-sdk
+android.ndk_path = /home/runner/.buildozer/android/platform/android-ndk
+android.entrypoint = org.kivy.android.PythonActivity

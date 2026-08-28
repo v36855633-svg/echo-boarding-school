@@ -22,14 +22,13 @@ jobs:
           mkdir -p $HOME/android-sdk/licenses
           echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > $HOME/android-sdk/licenses/android-sdk-license
           echo "84831b9409646a918e30573bab4c9c91346d8abd" > $HOME/android-sdk/licenses/android-sdk-preview-license
-          echo "d56f5187479451eabf01fb78af6dfcb131a6481e" > $HOME/android-sdk/licenses/android-sdk-license
-          echo "33b6a2b64607f11b759f320ef9dff4ae5c47d97a" > $HOME/android-sdk/licenses/android-sdk-preview-license
       - name: Install SDK packages
         env:
           JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
         run: |
           yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;37.0.0" "platform-tools" "platforms;android-37" > /dev/null 2>&1 || true
-          cp -r $HOME/android-sdk/licenses $HOME/.android/licenses || true
+          mkdir -p $HOME/.android
+          cp -r $HOME/android-sdk/licenses $HOME/.android/licenses
       - name: Build APK
         env:
           ANDROID_ACCEPT_SDK_LICENSES: "true"
