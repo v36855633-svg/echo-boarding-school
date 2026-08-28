@@ -22,3 +22,4 @@ android.accept_sdk_license = True
 android.sdk_path = /home/runner/android-sdk
 android.ndk_path = /home/runner/.buildozer/android/platform/android-ndk
 android.entrypoint = org.kivy.android.PythonActivity
+android.skip_update = True
